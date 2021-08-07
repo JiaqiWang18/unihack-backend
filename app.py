@@ -1,18 +1,19 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_cors import CORS
-from make_celery import make_celery
+from ocr.ocr import ImageToText
+#from bixin import predict
 
 app = Flask(__name__)
 CORS(app)
 
 
-@app.post('/api/predict')
+@app.route('/api/predict', methods=["POST"])
 def upload_image():
     try:
         # check if the post request has the file part
         file = request.files['file']
-        print(file)
-        return "Image uploaded"
+        text = ImageToText(file)
+        return jsonify({"text":text})
     except Exception as err:
         return "Error, image not received."
 

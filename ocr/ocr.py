@@ -8,10 +8,11 @@ from matplotlib import pyplot as plt
 
 from cnocr import CnOcr
 
-def ImageToText:
+
+def ImageToText(file):
     # Read image
-    filepath = "../Capture.JPG"
-    im = Image.open(filepath)
+    filepath = "Capture.JPG"
+    im = Image.open(file)
 
     im = im.convert("RGB")
 
@@ -25,11 +26,9 @@ def ImageToText:
     H = im.height
     im = im.crop((0, H * 0.08, W, H - H * 0.05))
 
-
     new_im = im.convert('L')
     g_im = np.array(new_im)
     res_im = np.array(new_im)
-
 
     W = im.width
     H = im.height
@@ -57,10 +56,7 @@ def ImageToText:
         if (pcl[i] + pcl[i + 1]) / 2 - (pcl[i - 1] + pcl[i - 2]) / 2 > 0.05:
             cropright = i
 
-
     plt.plot(percentagelog)
-
-
 
     cropim = im.crop((cropleft, 0, cropright, H))
     c_im = np.array(cropim)
@@ -68,7 +64,6 @@ def ImageToText:
 
     CW = cropim.width
     CH = cropim.height
-
 
     bitmap = np.zeros((CH, CW))
 
@@ -79,7 +74,6 @@ def ImageToText:
             if np.linalg.norm(color - np.array((151, 235, 116))) < 25:
                 c_im2[r, c] = (0, 0, 0)
                 bitmap[r, c] = 1
-
 
     percentcounter = [0, 0]
     diffcounter = []
@@ -100,14 +94,16 @@ def ImageToText:
                 percentcounter[-2] + percentcounter[-3] + percentcounter[-4]) / 3 > 0.1 and min(percentcounter[-1],
                                                                                                 percentcounter[-2],
                                                                                                 percentcounter[-3],
-                                                                                                percentcounter[-4]) < 0.05:
+                                                                                                percentcounter[
+                                                                                                    -4]) < 0.05:
             sep.append([r, 0])
-        if len(percentcounter) > 4 and (percentcounter[-2] + percentcounter[-3] + percentcounter[-4]) / 3 - percentcounter[
-            -1] > 0.1 and min(percentcounter[-1], percentcounter[-2], percentcounter[-3], percentcounter[-4]) < 0.05:
+        if len(percentcounter) > 4 and (percentcounter[-2] + percentcounter[-3] + percentcounter[-4]) / 3 - \
+                percentcounter[
+                    -1] > 0.1 and min(percentcounter[-1], percentcounter[-2], percentcounter[-3],
+                                      percentcounter[-4]) < 0.05:
             sep.append([r, 1])
 
     # In[23]:
-
 
     sep2 = []
     index = 0
@@ -136,6 +132,4 @@ def ImageToText:
             line.append("".join(i).strip())
         total = "".join(line).strip()
         lines.append(total)
-        print(total)
-
-    Image.fromarray(c_im[pairs[0][0]:pairs[0][1], ])
+    return lines
