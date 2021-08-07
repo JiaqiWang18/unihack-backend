@@ -39,8 +39,8 @@ def getSentiment(text):
 
     # Read AWS access key from env. variables or configuration file. Best practice is NOT
     # to embed credentials in code.
-    access_key = ''
-    secret_key = ''
+    access_key = os.environ.get("UNIHACKKEY")
+    secret_key = os.environ.get("UNIHACKSECRET")
     if access_key is None or secret_key is None:
         print('No access key is available.')
         sys.exit()

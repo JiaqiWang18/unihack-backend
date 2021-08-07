@@ -21,7 +21,7 @@ def upload_image():
         return "Error, image not received."
 
 @app.route('/api/predict', methods=["POST"])
-def upload_image():
+def predict():
     try:
         # check if the post request has the file part
         textList = request.text

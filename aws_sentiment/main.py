@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from API import getSentiment
-from Identifier import isRenZha
+from aws_sentiment.API import getSentiment
+from aws_sentiment.Identifier import isRenZha
 
 def makePrediction(FILENAME = "input.txt"):
     DICT = {}
@@ -21,5 +21,3 @@ def makePrediction(FILENAME = "input.txt"):
         TARGET_SENTI[senti] += 1
 
     return DICT,TARGET_SENTI
-    
-main()
