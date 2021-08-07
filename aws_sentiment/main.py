@@ -2,8 +2,7 @@
 from API import getSentiment
 from Identifier import isRenZha
 
-def main():
-    FILENAME = "input.txt"
+def makePrediction(FILENAME = "input.txt"):
     DICT = {}
     TARGET_SENTI = {"NEGATIVE":0,
                     "POSITIVE":0,
@@ -21,9 +20,6 @@ def main():
         DICT[sentence] = senti
         TARGET_SENTI[senti] += 1
 
-    print(DICT)
-    print(TARGET_SENTI)
-    score, report = isRenZha(TARGET_SENTI)
-    print("他/她的人渣指数(1~10):", "{:.2f}".format(score))
-    print("分析:", report)
+    return DICT,TARGET_SENTI
+    
 main()
