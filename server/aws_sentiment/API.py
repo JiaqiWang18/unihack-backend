@@ -1,6 +1,7 @@
 import sys, os, base64, datetime, hashlib, hmac 
 import requests # pip install requests
 import json
+from dotenv import load_dotenv
 
 def getSentiment(text):
     # ************* REQUEST VALUES *************
@@ -39,8 +40,9 @@ def getSentiment(text):
 
     # Read AWS access key from env. variables or configuration file. Best practice is NOT
     # to embed credentials in code.
-    access_key = os.environ.get("UNIHACKKEY")
-    secret_key = os.environ.get("unihacksecret")
+    load_dotenv()
+    access_key = os.getenv("UNIHACKKEY")
+    secret_key = os.getenv("unihacksecret")
     if access_key is None or secret_key is None:
         print('No access key is available.')
         sys.exit()
