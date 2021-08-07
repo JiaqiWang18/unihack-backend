@@ -4,14 +4,14 @@
 from PIL import Image
 
 import numpy as np
-from matplotlib import pyplot as plt
 
 from cnocr import CnOcr
 
 
 def ImageToText(file):
     # Read image
-    filepath = "Capture.JPG"
+
+    print("starting OCR")
     im = Image.open(file)
 
     im = im.convert("RGB")
@@ -56,8 +56,6 @@ def ImageToText(file):
         if (pcl[i] + pcl[i + 1]) / 2 - (pcl[i - 1] + pcl[i - 2]) / 2 > 0.05:
             cropright = i
 
-    plt.plot(percentagelog)
-
     cropim = im.crop((cropleft, 0, cropright, H))
     c_im = np.array(cropim)
     c_im2 = np.array(cropim)
@@ -66,7 +64,9 @@ def ImageToText(file):
     CH = cropim.height
 
     bitmap = np.zeros((CH, CW))
-
+    print(
+        "+_+_+_+_+__+_+_+_+_+_+_+_+_+_+_+_"
+    )
     for r in range(CH):
         count = 0
         for c in range(CW):
@@ -124,6 +124,7 @@ def ImageToText(file):
         pairs.append((sep[i][0], sep[i + 1][0]))
 
     lines = []
+    print("---------------------------------------------")
     ocr = CnOcr(name='def')
     for pair in pairs:
         text = ocr.ocr(c_im[pair[0]:pair[1], ])
@@ -132,4 +133,5 @@ def ImageToText(file):
             line.append("".join(i).strip())
         total = "".join(line).strip()
         lines.append(total)
+    print(lines)
     return lines
