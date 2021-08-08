@@ -1,3 +1,4 @@
+from subprocess import run
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from server.ocr.ocr import ImageToText
@@ -5,6 +6,7 @@ from server.ocr.ocr import ImageToText
 from server.aws_sentiment.Utils import preprocessText, AWSWriteTxt
 from server.aws_sentiment.main import makePrediction
 from server.aws_sentiment.Identifier import isRenZha
+from server.bert.runbert import runBERT,BERTwriteCsv
 
 app = Flask(__name__)
 CORS(app)
@@ -27,11 +29,14 @@ def predict():
         # check if the post request has the file part
         textList = request.get_json()["text"]
         textList = preprocessText(textList)
+        BERTwriteCsv(textList,"server/bert/data/test.csv")
+        BERT_DICT  = runBERT(textList,"server/bert/",'test_results.tsv')
         AWSWriteTxt(textList, "input.txt")
         DICT, TARGET_SENTI = makePrediction("input.txt")
         score, report = isRenZha(TARGET_SENTI)
         print(report)
         return jsonify({#"text": text,
+                        "BERT_DICT": BERT_DICT,
                         "DICT": DICT,
                         "TARGET_SENTI": TARGET_SENTI,
                         "score": score,
